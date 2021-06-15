@@ -18,6 +18,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         timestamp: new Date().toISOString(),
         path: request.url,
       };
+      console.log("error happend");
     if (status == 400) {
         const validationRaw = exception.getResponse()['message'];
         const validation = validationRaw.map(v => JSON.parse(v));

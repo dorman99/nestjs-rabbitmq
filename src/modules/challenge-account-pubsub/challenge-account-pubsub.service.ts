@@ -136,7 +136,8 @@ export class ChallengeAccountPubSubService {
 
     @RabbitSubscribe({
         exchange: constant.exchanges.challenge.update.name,
-        routingKey: constant.exchanges.challenge.update.routingKeys
+        routingKey: constant.exchanges.challenge.update.routingKeys,
+        queue: constant.exchanges.challenge.update.queue // jangan kasih nameless q
     })
     public async pubSubUpdateChallenge(msg: ChallengeMessagePubSub) {
         console.log("Update Challenge Incoming ....");
@@ -152,6 +153,7 @@ export class ChallengeAccountPubSubService {
         
         const challengeAccount = await this.challengeAccountService.findAll({limit, skip});
         const challenge = await this.challengeService.find(msg.id);
+        // console.log(challengeAccount)
         if (challengeAccount.length == 0) {
             return new Nack();
         }
@@ -159,7 +161,8 @@ export class ChallengeAccountPubSubService {
             const account = challengeAccount[i];
             let challenges = account.challenges;
             challenges.forEach(c => {
-                if(c._id == challenge._id) {
+                if(c._id.toString() === challenge._id.toString()) {
+                    console.log("here");
                     c.name = challenge.name
                 }
             });

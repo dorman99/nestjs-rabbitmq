@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Res, Delete, Param, Put, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query, Res, Delete, Param, Put, UsePipes, ValidationPipe, HttpException } from "@nestjs/common";
 import { AppResponse } from "src/common/response.base";
 import { ChallengeService } from "./challenge.service";
 import { UpdateDto } from "./dto/update.dto";
@@ -11,13 +11,14 @@ export class ChallengeController {
 
     @Get()
     async findAll(@Query('limit') limit, @Query('skip') skip, @Res() res): Promise<AppResponse> {
-        try {
+        // try {
+            // throw new HttpException('BOOOM!', 404);
             let results = await this.challengeService.findAll(parseInt(limit || 10), parseInt(skip || 0));
             let pagination = {results: results, count: results.length};
             return AppResponse.ok(res, pagination);
-        } catch (err) {
-            return AppResponse.badRequest(res, []);
-        }
+        // } catch (err) {
+        //     return AppResponse.badRequest(res, []);
+        // }
     }
 
     @Post()

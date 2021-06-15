@@ -1,5 +1,5 @@
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { Injectable } from "@nestjs/common";
+import { HttpException, Injectable } from "@nestjs/common";
 import { Types } from "mongoose";
 import constant from "src/common/utils/constant";
 import { Challenge } from "src/entities/challenge.entity";
@@ -22,12 +22,20 @@ export class ChallengeService {
             await this.amqpConnection.publish(constant.exchanges.challenge.create.name, routing, {limit: 1000, skip: 0, challenge});
             return Promise.resolve(challenge);
         } catch (err) {
-            return Promise.reject(err);
+            throw new HttpException('Bad request', 4)
+            // return Promise.reject(err);
         }
     }
 
-    async findAll(limit: number, skip: number) {
-        return this.challengeRepository.findAll(limit, skip);
+    async findAll(limit: number, skip: number): Promise< any [] > {
+        // await 1
+        let x = false;
+        if (!x) {
+            throw new HttpException('not found', 404)
+        } 
+        // await 2
+        throw new HttpException("bad request", 400);
+        // return this.challengeRepository.findAll(limit, skip);
     }
 
     async find(id: Types.ObjectId): Promise<Challenge> {

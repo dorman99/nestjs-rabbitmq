@@ -24,6 +24,7 @@ import constant from "src/common/utils/constant";
                 {
                     name: constant.exchanges.challenge.update.name,
                     type: constant.exchanges.challenge.update.type,
+                    routingKeys: constant.exchanges.challenge.update.routingKeys
                 }
             ]
         })
